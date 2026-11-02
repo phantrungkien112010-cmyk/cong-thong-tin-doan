@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  title      String
+  summary    String   @db.Text
+  content    String   @db.Text
+  coverImage String?  @db.Text
+  category   String   @default("Tin hoạt động")
+  author     String   @default("Ban Biên Tập")
+  views      Int      @default(0)
+  isPinned   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("posts")
+}
+
