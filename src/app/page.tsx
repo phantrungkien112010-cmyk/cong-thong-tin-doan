@@ -37,7 +37,6 @@ export default async function HomePage({ searchParams }: HomeProps) {
   }
 
   let posts: any[] = [];
-  let dbError = false;
 
   try {
     posts = await prisma.post.findMany({
@@ -46,7 +45,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
     });
   } catch (error) {
     console.error("Lỗi kết nối CSDL:", error);
-    dbError = true;
+    // Trả về mảng rỗng, trang sẽ hiển thị empty state thay vì thông báo lỗi
   }
 
   // Bài viết nổi bật (bài được ghim đầu tiên hoặc bài mới nhất)
@@ -123,22 +122,6 @@ export default async function HomePage({ searchParams }: HomeProps) {
             );
           })}
         </div>
-
-        {/* Database Error Alert (nếu chưa cấu hình hoặc lỗi DB) */}
-        {dbError && (
-          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg mb-8 shadow-sm">
-            <div className="flex">
-              <div className="ml-3">
-                <p className="text-sm font-semibold text-amber-800">
-                  Lưu ý kết nối Cơ sở dữ liệu:
-                </p>
-                <p className="text-xs text-amber-700 mt-1">
-                  Đang khởi tạo hoặc kết nối cơ sở dữ liệu Supabase. Vui lòng chạy lệnh <code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono">npx prisma db push</code> để khởi tạo bảng dữ liệu.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Posts Content */}
         {posts.length === 0 ? (
