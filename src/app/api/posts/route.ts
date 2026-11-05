@@ -40,10 +40,15 @@ export async function GET(request: Request) {
       page,
       totalPages: Math.ceil(total / limit),
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Lỗi lấy danh sách bài viết:", error);
     return NextResponse.json(
-      { success: false, message: "Không thể tải danh sách bài viết từ CSDL" },
+      {
+        success: false,
+        message: "Không thể tải danh sách bài viết từ CSDL",
+        error: error?.message || String(error),
+        code: error?.code,
+      },
       { status: 500 }
     );
   }
